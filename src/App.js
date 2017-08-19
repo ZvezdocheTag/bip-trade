@@ -14,7 +14,9 @@ var options = [
 ];
 
 function logChange(val) {
-  console.log("Selected: " + JSON.stringify(val));
+  let pick = this.data.filter(item => item.MarketName === val.value)
+
+  this.stata(pick)
 }
   // var config = {
   //   apiKey: "AIzaSyD-HSSoQ99IhZW4VYh1YFDxBCszQJIuIB4",
@@ -28,12 +30,34 @@ function logChange(val) {
 const List = () => {
   
 }
+
+const SelectedCard = (props) => {
+  // console.log(props)
+  let data = props.data[0]
+  if(typeof data !== "undefined") {
+      return (
+        <div className="card">
+          <h3 className="card__name">{data.MarketName}</h3>
+          <div className="card__bids bid">
+            <div className="bid__hight">{data.Hight}</div>
+            <div className="bid__low">{data.Low}</div>
+            <div className="bid__last">{data.Last}</div>
+          </div>
+          <div className="card__capitalization">{data.Volume}</div>
+          <div className="card__time">{data.TimeStamp}</div>
+        </div> 
+      )
+  } else {
+    return <div>No card yeat</div>
+  }
+}
 class App extends Component {
   constructor() {
     super()
     this.state = {
       speed: 10,
-      fxRates: []
+      fxRates: [],
+      picked: {}
     }
   }
   componentWillMount() {
@@ -52,9 +76,13 @@ class App extends Component {
   //   })
   // }
 
-
+  settle(data) {
+    this.setState({
+      picked:data 
+    })
+  }
   render() {
-    // console.log(this.state.fxRates)
+    // console.log(this.state.picked)
     let data = [];
     let filterPare = [];
     if(this.state.fxRates !== null) {
@@ -69,9 +97,12 @@ class App extends Component {
         <Select
           name="form-field-name"
           value="one"
+          data={data}
           options={filterPare}
           onChange={logChange}
+          stata={this.settle.bind(this)}
         />
+        <SelectedCard data={this.state.picked}/>
         {/* <ul>
            { typeof data === "undefined" ? <li> No data</li> :
             data.map((item, i) => {
