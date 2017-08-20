@@ -31,18 +31,38 @@ const List = () => {
   
 }
 
-const AlarmCard = () => {
+const AlarmCard = (props) => {
+
+
+
+  const confirmSetting = (e) => {
+    e.preventDefault()
+    console.log("Fuck", e.target, this)
+  }
+
   return (
-    
+    <form className="alarm">
+      <div className="alarm__field">
+        <label >
+          Set alarm hight
+        </label>
+        <input type="number" name="alarm-high-price" onChange={props.handlerChange}/> 
+      </div>
+      <div className="alarm__field">
+        <label  >
+          Set alarm low
+        </label>
+        <input type="number" name="alarm-low-price"  onChange={props.handlerChange}/> 
+      </div>
+      <button type="submit" className="alarm__confirm" onClick={confirmSetting}>Confirm</button>
+    </form>
   )
 }
 
 const SelectedCard = (props) => {
-  
   let data = props.data;
   if(typeof data !== "undefined" &&  props.data.length > 0  ) {
     data = props.data[0]
-    // console.log(data)
       return (
         <div className="card">
           <h3 className="card__name">{data.MarketName}</h3>
@@ -51,6 +71,7 @@ const SelectedCard = (props) => {
               <div className="bid__name">
                 High
               </div>
+           
               <div className="bid__value">
               {data.High}
               </div>
@@ -87,6 +108,7 @@ const SelectedCard = (props) => {
           {data.TimeStamp}
           </div>
             </div>
+            <AlarmCard /> 
         </div> 
       )
   } else {
@@ -99,7 +121,12 @@ class App extends Component {
     this.state = {
       speed: 10,
       fxRates: [],
-      picked: {}
+      picked: {},
+      alarm: {
+        name: "",
+        high: null,
+        low: null
+      }
     }
   }
   componentWillMount() {
@@ -117,9 +144,19 @@ class App extends Component {
   //     })
   //   })
   // }
+  handlerChange (e) {
+    let target = e.target;
+    let value = target.value
+    let name = target.getAttribute('name');
+    let low, hight;
 
+    if(name === "alarm-high-price") {
+
+    } else if(name === "alarm-low-price") {
+
+    }
+  }
   settle(data) {
-    // console.log(data)
     this.setState({
       picked:data[0].MarketName 
     })
@@ -134,8 +171,6 @@ class App extends Component {
     }
   }
   render() {
-    // console.log(this.state.picked)
-    // console.log(this.state.fxRates)
     let data = [];
     let {filterPare, filterState} = [];
     if(this.state.fxRates !== null) {
@@ -158,20 +193,9 @@ class App extends Component {
           onChange={logChange}
           stata={this.settle.bind(this)}
         />
-        <SelectedCard data={filterState}/>
-        {/* <ul>
-           { typeof data === "undefined" ? <li> No data</li> :
-            data.map((item, i) => {
-              return (
-                <li key={i}>
-                  <a className="marketName">
-                    {item.MarketName} 
-                  </a> 
-                </li>
-              )
-            })
-           }
-        </ul>   */}
+        <SelectedCard data={filterState} handlerChange={this.handlerChange.bind(this)}/>
+
+      
       </div>
     );
   }
