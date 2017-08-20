@@ -1,12 +1,10 @@
-var express = require('express'),
+const express = require('express'),
 app = express(),
 http = require('http').Server(app),
 io = require('socket.io')(http),
 fetch = require('node-fetch');
 
-var bittrex = require('./node.bittrex.api/node.bittrex.api.js');
-
-
+const bittrex = require('./node.bittrex.api/node.bittrex.api.js');
 
 // DEFAULT SOCKET
 var cor = __dirname.slice(0, __dirname.length - 3) + 'public';
@@ -19,13 +17,20 @@ var connected = 0;
 var interval = setInterval(updateData, 10000);
 
 io.on('connection', function (socket) {
-connected++;
-io.sockets.emit('data', cachedData);
-socket.on('disconnect', function () {
-  connected--;
-});
+  connected++;
+  io.sockets.emit('data', cachedData);
+  socket.on('disconnect', function () {
+    connected--;
+  });
 });
 
+
+const PUBLIC_API_BITTREX = {
+  getmarkets: 'getmarkets',
+  getcurrencies: 'getcurrencies',
+  getticker: 'getticker',
+  getmarketsummaries: 'getmarketsummaries',
+}
 const processData = (fields, valid) => data => {
   // console.log(data)
   return data;
@@ -36,16 +41,16 @@ const processData = (fields, valid) => data => {
 
 
 function updateData() {
-fetch('https://bittrex.com/api/v1.1/public/getmarketsummaries')
-  .then(response=> response.json())
-  // .then(processData(fields, "timestamp"))
-  .then(result => {
-    cachedData = result;
-    // console.log(result)
-    io.sockets.emit('data', result);
-})
+  fetch(`https://bittrex.com/api/v1.1/public/${PUBLIC_API_BITTREX.getmarketsummaries}`)
+    .then(response=> response.json())
+    // .then(processData(fields, "timestamp"))
+    .then(result => {
+      cachedData = result;
+      // console.log(result)
+      io.sockets.emit('data', result);
+  })
 }
 
 http.listen(3005, function () {
-console.log('listening on: 3000');
+console.log('listening on: 3005');
 });

@@ -7,12 +7,6 @@ import ws from './utils/ws'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
-
-var options = [
-  { value: 'one', label: 'One' },
-  { value: 'two', label: 'Two' }
-];
-
 function logChange(val) {
   let pick = this.data.filter(item => item.MarketName === val.value)
 
@@ -32,14 +26,11 @@ const List = () => {
 }
 
 const AlarmCard = (props) => {
-
-
-
   const confirmSetting = (e) => {
     e.preventDefault()
-    console.log("Fuck", e.target, this)
+    props.alarmName(props.currentName)
   }
-
+  
   return (
     <form className="alarm">
       <div className="alarm__field">
@@ -108,7 +99,7 @@ const SelectedCard = (props) => {
           {data.TimeStamp}
           </div>
             </div>
-            <AlarmCard /> 
+            <AlarmCard handlerChange={props.handlerChange} alarmName={props.alarmName} alarm={props.alarm} currentName={data.MarketName}/> 
         </div> 
       )
   } else {
@@ -123,6 +114,7 @@ class App extends Component {
       fxRates: [],
       picked: {},
       alarm: {
+        set: false,
         name: "",
         high: null,
         low: null
@@ -151,11 +143,32 @@ class App extends Component {
     let low, hight;
 
     if(name === "alarm-high-price") {
-
+      this.setState({
+        alarm:  {...this.state.alarm, high: value}
+      })
     } else if(name === "alarm-low-price") {
-
+      this.setState({
+        alarm:  {...this.state.alarm, low: value}
+      })
     }
+    
   }
+
+  sendNotificationMessage(alarm) {
+      this.setState({
+        alarm: {...this.state.alarm, set: true}
+      })
+      console.log("GOGOOG", alarm)
+  }
+
+  setAlarmName(name) {
+    this.setState({
+      alarm: {...this.state.alarm, name: name} 
+    })
+
+    this.sendNotificationMessage(this.state.alarm)
+  }
+
   settle(data) {
     this.setState({
       picked:data[0].MarketName 
@@ -171,6 +184,11 @@ class App extends Component {
     }
   }
   render() {
+    let alarm  = this.state.alarm;
+    if(alarm.set) {
+      console.log("sec GOOGO", this.state.alarm)
+    }
+    
     let data = [];
     let {filterPare, filterState} = [];
     if(this.state.fxRates !== null) {
@@ -193,7 +211,7 @@ class App extends Component {
           onChange={logChange}
           stata={this.settle.bind(this)}
         />
-        <SelectedCard data={filterState} handlerChange={this.handlerChange.bind(this)}/>
+        <SelectedCard data={filterState} handlerChange={this.handlerChange.bind(this)} alarmName={this.setAlarmName.bind(this)} alarm={this.state.alarm}/>
 
       
       </div>
