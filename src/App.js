@@ -31,20 +31,62 @@ const List = () => {
   
 }
 
+const AlarmCard = () => {
+  return (
+    
+  )
+}
+
 const SelectedCard = (props) => {
-  // console.log(props)
-  let data = props.data[0]
-  if(typeof data !== "undefined") {
+  
+  let data = props.data;
+  if(typeof data !== "undefined" &&  props.data.length > 0  ) {
+    data = props.data[0]
+    // console.log(data)
       return (
         <div className="card">
           <h3 className="card__name">{data.MarketName}</h3>
           <div className="card__bids bid">
-            <div className="bid__hight">{data.Hight}</div>
-            <div className="bid__low">{data.Low}</div>
-            <div className="bid__last">{data.Last}</div>
+            <div className="bid__hight">
+              <div className="bid__name">
+                High
+              </div>
+              <div className="bid__value">
+              {data.High}
+              </div>
+              </div>
+            <div className="bid__low">
+            <div className="bid__name">
+                Low
+              </div>
+              <div className="bid__value">
+              {data.Low}
+              </div>
+              </div>
+            <div className="bid__last">
+            <div className="bid__name">
+                Last
+              </div>
+              <div className="bid__value">
+              {data.Last}
+              </div></div>
           </div>
-          <div className="card__capitalization">{data.Volume}</div>
-          <div className="card__time">{data.TimeStamp}</div>
+          <div className="card__capitalization">
+            <div className="card__label">
+            Capitalization
+          </div>
+          <div className="card__value">
+            {data.Volume}
+          </div>
+          </div>
+          <div className="card__time">
+          <div className="card__label">
+            Time
+          </div>
+          <div className="card__value">
+          {data.TimeStamp}
+          </div>
+            </div>
         </div> 
       )
   } else {
@@ -77,18 +119,32 @@ class App extends Component {
   // }
 
   settle(data) {
+    // console.log(data)
     this.setState({
-      picked:data 
+      picked:data[0].MarketName 
     })
+  }
+
+  filterData(picked) {
+    if(this.state.fxRates !== "undefined") {
+
+      return this.state.fxRates.result.filter(item => item.MarketName === picked)
+    } else {
+      return ''
+    }
   }
   render() {
     // console.log(this.state.picked)
+    // console.log(this.state.fxRates)
     let data = [];
-    let filterPare = [];
+    let {filterPare, filterState} = [];
     if(this.state.fxRates !== null) {
        data = this.state.fxRates.result
        filterPare = typeof data !== "undefined" ? data.map(item => ({value: item.MarketName, label: item.MarketName})) : []
+       filterState = typeof data !== "undefined" ? this.filterData(this.state.picked) : []
     }
+
+    // console.log(filterState)
 
     
     // console.log(filterPare)
@@ -102,7 +158,7 @@ class App extends Component {
           onChange={logChange}
           stata={this.settle.bind(this)}
         />
-        <SelectedCard data={this.state.picked}/>
+        <SelectedCard data={filterState}/>
         {/* <ul>
            { typeof data === "undefined" ? <li> No data</li> :
             data.map((item, i) => {

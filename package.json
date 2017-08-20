@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "1.0.10"
+    "react-scripts": "1.0.10",
+    "react-select": "^1.0.0-rc.5"
   },
   "dependencies": {
     "react": "^15.6.1",
