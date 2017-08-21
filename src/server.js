@@ -10,7 +10,7 @@ const bittrex = require('./node.bittrex.api/node.bittrex.api.js');
 var cor = __dirname.slice(0, __dirname.length - 3) + 'public';
 app.use(express.static(__dirname + '/'));
 
-var fields = ["currencyPair", "timestamp", "bidBig", "bidPips", "offerBig", "offerPips", "high", "low", "open"]
+
 var cachedData;
 var connected = 0;
 

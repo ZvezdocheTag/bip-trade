@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import Select from 'react-select';
-import 'react-select/dist/react-select.css';
 
+import { connect } from 'react-redux'
+import { fetchData } from '../actions'
 import {SelectedCard} from './SelectCard'
+import 'react-select/dist/react-select.css';
 
 
 function logChange(val) {
@@ -15,21 +17,23 @@ function logChange(val) {
 class Core extends Component {
 constructor() {
     super()
-    this.state = {
-        speed: 10,
-        fxRates: [],
-        picked: {},
-        alarm: {
-        set: false,
-        name: "",
-        high: null,
-        low: null
+        this.state = {
+                speed: 10,
+                fxRates: [],
+                picked: {},
+                alarm: {
+                set: false,
+                name: "",
+                high: null,
+                low: null
+            }
         }
     }
-    }
     componentWillMount() {
-        io("http://localhost:3005").on("data", data => this.setState({ fxRates: data }));
+        let { dispatch } = this.props;
+        dispatch(fetchData(this.props.selectMarket))
     }
+
     handlerChange (e) {
         let target = e.target;
         let value = target.value
@@ -52,7 +56,7 @@ constructor() {
           this.setState({
             alarm: {...this.state.alarm, set: true}
           })
-          console.log("GOGOOG", alarm)
+        //   console.log("GOGOOG", alarm)
       }
     
       setAlarmName(name) {
@@ -69,45 +73,38 @@ constructor() {
         })
       }
     
-      filterData(picked) {
-        if(this.state.fxRates !== "undefined") {
-    
-          return this.state.fxRates.result.filter(item => item.MarketName === picked)
-        } else {
-          return ''
-        }
-      }
-      
+
     render() {
+        let { tradePair } = this.props.marketData;
+        let filterPare = tradePair.map(item => ({value: item.MarketName, label: item.MarketName}));
+        let filterState = tradePair.filter(item => item.MarketName === this.state.picked)
+
         let alarm  = this.state.alarm;
         if(alarm.set) {
-          console.log("sec GOOGO", this.state.alarm)
-        }
-        
-        let data = [];
-        let {filterPare, filterState} = [];
-        if(this.state.fxRates !== null) {
-           data = this.state.fxRates.result
-           filterPare = typeof data !== "undefined" ? data.map(item => ({value: item.MarketName, label: item.MarketName})) : []
-           filterState = typeof data !== "undefined" ? this.filterData(this.state.picked) : []
+        //   console.log("sec GOOGO", this.state.alarm)
         }
 
         return (
             <div className="application">
                 <Select
-                name="form-field-name"
-                value="one"
-                data={data}
-                options={filterPare}
-                onChange={logChange}
-                stata={this.settle.bind(this)}
+                    name="form-field-name"
+                    value="one"
+                    data={tradePair}
+                    options={filterPare}
+                    onChange={logChange}
+                    stata={this.settle.bind(this)}
                 />
-                <SelectedCard data={filterState} handlerChange={this.handlerChange.bind(this)} alarmName={this.setAlarmName.bind(this)} alarm={this.state.alarm}/>
-
-            
+                <SelectedCard 
+                    data={filterState} 
+                    handlerChange={this.handlerChange.bind(this)} 
+                    alarmName={this.setAlarmName.bind(this)} 
+                    alarm={this.state.alarm}
+                />
             </div>
         );
     }
 }
 
-export default Core;
+
+const mapStateToProps = state => state;
+export default connect(mapStateToProps)(Core);

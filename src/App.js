@@ -24,9 +24,11 @@ const store = createStore(
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Core />
-      </div>
+      <Provider store={store}>
+        <div className="App">
+          <Core />
+        </div>
+      </Provider>
     );
   }
 }
