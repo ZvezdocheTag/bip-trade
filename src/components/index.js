@@ -83,7 +83,7 @@ constructor() {
         if(alarm.set) {
         //   console.log("sec GOOGO", this.state.alarm)
         }
-
+        console.log(this)
         return (
             <div className="application">
                 <Select
@@ -99,6 +99,7 @@ constructor() {
                     handlerChange={this.handlerChange.bind(this)} 
                     alarmName={this.setAlarmName.bind(this)} 
                     alarm={this.state.alarm}
+                    main={this}
                 />
             </div>
         );

@@ -1,7 +1,38 @@
 import React, { Component } from 'react';
-import {AlarmCard} from './AlarmCard'
+import {AlarmForm} from './AlarmForm'
+import AlarmCard from './AlarmCard'
 
-
+const BidItem = (props) => {
+  var data = props.data;
+  
+  return (
+    <div className="card__bids bid">
+    <div className="bid__hight">
+      <div className="bid__name">
+        High
+      </div>
+      <div className="bid__value">
+      {data.High}
+      </div>
+      </div>
+    <div className="bid__low">
+    <div className="bid__name">
+        Low
+      </div>
+      <div className="bid__value">
+      {data.Low}
+      </div>
+      </div>
+    <div className="bid__last">
+    <div className="bid__name">
+        Last
+      </div>
+      <div className="bid__value">
+      {data.Last}
+      </div></div>
+  </div>
+  )
+}
 export const SelectedCard = (props) => {
     let data = props.data;
     if(typeof data !== "undefined" &&  props.data.length > 0  ) {
@@ -9,31 +40,7 @@ export const SelectedCard = (props) => {
         return (
           <div className="card">
             <h3 className="card__name">{data.MarketName}</h3>
-            <div className="card__bids bid">
-              <div className="bid__hight">
-                <div className="bid__name">
-                  High
-                </div>
-                <div className="bid__value">
-                {data.High}
-                </div>
-                </div>
-              <div className="bid__low">
-              <div className="bid__name">
-                  Low
-                </div>
-                <div className="bid__value">
-                {data.Low}
-                </div>
-                </div>
-              <div className="bid__last">
-              <div className="bid__name">
-                  Last
-                </div>
-                <div className="bid__value">
-                {data.Last}
-                </div></div>
-            </div>
+            <BidItem data={data}/>
             <div className="card__capitalization">
               <div className="card__label">
               Capitalization
@@ -50,7 +57,8 @@ export const SelectedCard = (props) => {
             {data.TimeStamp}
             </div>
               </div>
-              <AlarmCard handlerChange={props.handlerChange} alarmName={props.alarmName} alarm={props.alarm} currentName={data.MarketName}/> 
+              <AlarmCard />
+              <AlarmForm main={props.main} name={data.MarketName}/> 
           </div> 
         )
     } else {

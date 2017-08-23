@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
+import { sBem } from '../helper/sbem'
 
+export default class AlarmCard extends Component {
+    render() {
+        let b = sBem('alarm-card', {m: 'sweet'});
+        // console.log(this)
+        return (
+            <div className={b()}>
+                <div className={b('item', {m: 'hight'})}>
+                    Good:   
+                     <div>    
 
-
-export const AlarmCard = (props) => {
-    const confirmSetting = (e) => {
-      e.preventDefault()
-      props.alarmName(props.currentName)
+                     </div>    
+                </div>
+                <div className={b('item', {m: 'low'})}>
+                    No Good:
+                </div>
+            </div>
+        );
     }
-    
-    return (
-      <form className="alarm">
-        <div className="alarm__field">
-          <label >
-            Set alarm hight
-          </label>
-          <input type="number" name="alarm-high-price" onChange={props.handlerChange}/> 
-        </div>
-        <div className="alarm__field">
-          <label  >
-            Set alarm low
-          </label>
-          <input type="number" name="alarm-low-price"  onChange={props.handlerChange}/> 
-        </div>
-        <button type="submit" className="alarm__confirm" onClick={confirmSetting}>Confirm</button>
-      </form>
-    )
-  }
+}
