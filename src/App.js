@@ -31,11 +31,11 @@ const List = () => {
   
 }
 
-const AlarmCard = () => {
-  return (
+// const AlarmCard = () => {
+//   return (
     
-  )
-}
+//   )
+// }
 
 const SelectedCard = (props) => {
   
