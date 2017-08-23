@@ -33,11 +33,9 @@ const marketData = (state = defaultState, action ) => {
             return {...state, tradePair: action.data}
         case FAIL_CONNECTION:
             return state
-        case SET_CURRENT_PAIR:
-            
+        case SET_CURRENT_PAIR: 
             return {...state, selectedPair: [...state.selectedPair, action.pair]}
         case SET_ALARM_PAIR:
-        console.log(action, "SELECTEd")
             return {...state, selectedAlarmPair: [...state.selectedAlarmPair, action.pair]}
         case PUSH_NOTIFICATION:
         default:

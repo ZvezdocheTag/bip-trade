@@ -4,18 +4,31 @@ import { sBem } from '../helper/sbem'
 export default class AlarmCard extends Component {
     render() {
         let b = sBem('alarm-card', {m: 'sweet'});
-        // console.log(this)
+        let { selectedAlarmPair} = this.props.main.props.marketData;
+        console.log(selectedAlarmPair)
         return (
+            
             <div className={b()}>
-                <div className={b('item', {m: 'hight'})}>
-                    Good:   
-                     <div>    
-
-                     </div>    
-                </div>
-                <div className={b('item', {m: 'low'})}>
-                    No Good:
-                </div>
+                {
+                    selectedAlarmPair.map((item, i) => {
+                        return (
+                            <div key={i}>
+                                <div className={b('item', {m: 'title'})}>    
+                                    {item.name}
+                                </div>  
+                                <div className={b('item', {m: 'hight'})}>
+                                    Good:   
+                                    <div>    
+                                    {item.high}
+                                    </div>    
+                                </div>
+                                <div className={b('item', {m: 'low'})}>
+                                    No Good:{item.low}
+                                </div>
+                            </div>
+                        )
+                    })
+                }
             </div>
         );
     }

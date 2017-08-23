@@ -18,15 +18,7 @@ class Core extends Component {
 constructor() {
     super()
         this.state = {
-                speed: 10,
-                fxRates: [],
-                picked: {},
-                alarm: {
-                set: false,
-                name: "",
-                high: null,
-                low: null
-            }
+          picked: {},
         }
     }
     componentWillMount() {
@@ -34,39 +26,7 @@ constructor() {
         dispatch(fetchData(this.props.selectMarket))
     }
 
-    handlerChange (e) {
-        let target = e.target;
-        let value = target.value
-        let name = target.getAttribute('name');
-        let low, hight;
-    
-        if(name === "alarm-high-price") {
-          this.setState({
-            alarm:  {...this.state.alarm, high: value}
-          })
-        } else if(name === "alarm-low-price") {
-          this.setState({
-            alarm:  {...this.state.alarm, low: value}
-          })
-        }
-        
-      }
-    
-      sendNotificationMessage(alarm) {
-          this.setState({
-            alarm: {...this.state.alarm, set: true}
-          })
-        //   console.log("GOGOOG", alarm)
-      }
-    
-      setAlarmName(name) {
-        this.setState({
-          alarm: {...this.state.alarm, name: name} 
-        })
-    
-        this.sendNotificationMessage(this.state.alarm)
-      }
-    
+
       settle(data) {
         this.setState({
           picked:data[0].MarketName 
@@ -78,12 +38,6 @@ constructor() {
         let { tradePair } = this.props.marketData;
         let filterPare = tradePair.map(item => ({value: item.MarketName, label: item.MarketName}));
         let filterState = tradePair.filter(item => item.MarketName === this.state.picked)
-
-        let alarm  = this.state.alarm;
-        if(alarm.set) {
-        //   console.log("sec GOOGO", this.state.alarm)
-        }
-        console.log(this)
         return (
             <div className="application">
                 <Select
@@ -96,9 +50,6 @@ constructor() {
                 />
                 <SelectedCard 
                     data={filterState} 
-                    handlerChange={this.handlerChange.bind(this)} 
-                    alarmName={this.setAlarmName.bind(this)} 
-                    alarm={this.state.alarm}
                     main={this}
                 />
             </div>

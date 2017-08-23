@@ -57,7 +57,7 @@ export const SelectedCard = (props) => {
             {data.TimeStamp}
             </div>
               </div>
-              <AlarmCard />
+              <AlarmCard main={props.main}/>
               <AlarmForm main={props.main} name={data.MarketName}/> 
           </div> 
         )

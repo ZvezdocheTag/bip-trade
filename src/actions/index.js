@@ -6,6 +6,9 @@ export const SUCCESS_CONNECTION = 'SUCCESS_CONNECTION'
 export const FAIL_CONNECTION = 'FAIL_CONNECTION'
 export const SET_CURRENT_PAIR = 'SET_CURRENT_PAIR'
 export const SET_ALARM_PAIR = 'SET_ALARM_PAIR'
+export const FILTER_PAIR = 'FILTER_PAIR'
+
+
 export const PUSH_NOTIFICATION = 'PUSH_NOTIFICATION' 
 
 export const selectBittrexMarket = market => ({
@@ -33,7 +36,7 @@ export const setCurrentPair = pair => ({
     pair
   })
 
-export const setAlarmPair = pair => ({
+export const setAlarmPair = (pair) => ({
     type: SET_ALARM_PAIR,
     pair
   })
@@ -43,7 +46,10 @@ export const pushNotification = pair => ({
     pair
   })
 
-
+export const filterPair = (name) => {
+  type: FILTER_PAIR,
+  name
+}
 
 export const fetchData = market => dispatch => {
     io("http://localhost:3005").on("data", data => {
