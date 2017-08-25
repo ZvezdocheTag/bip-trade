@@ -37,6 +37,7 @@ export const SelectedCard = (props) => {
     let data = props.data;
     if(typeof data !== "undefined" &&  props.data.length > 0  ) {
       data = props.data[0]
+      // console.log(props.main)
         return (
           <div className="card">
             <h3 className="card__name">{data.MarketName}</h3>
@@ -58,7 +59,7 @@ export const SelectedCard = (props) => {
             </div>
               </div>
               <AlarmCard main={props.main}/>
-              <AlarmForm main={props.main} name={data.MarketName}/> 
+              <AlarmForm main={props.main} data={data}/> 
           </div> 
         )
     } else {

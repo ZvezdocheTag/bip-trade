@@ -14,7 +14,7 @@ app.use(express.static(__dirname + '/'));
 var cachedData;
 var connected = 0;
 
-var interval = setInterval(updateData, 10000);
+var interval = setInterval(updateData, 5000);
 
 io.on('connection', function (socket) {
   connected++;

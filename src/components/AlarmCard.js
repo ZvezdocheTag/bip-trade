@@ -4,10 +4,9 @@ import { sBem } from '../helper/sbem'
 export default class AlarmCard extends Component {
     render() {
         let b = sBem('alarm-card', {m: 'sweet'});
-        let { selectedAlarmPair} = this.props.main.props.marketData;
-        console.log(selectedAlarmPair)
+        let { selectedAlarmPair} = this.props.main.props.notifications;
+
         return (
-            
             <div className={b()}>
                 {
                     selectedAlarmPair.map((item, i) => {

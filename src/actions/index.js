@@ -8,13 +8,20 @@ export const SET_CURRENT_PAIR = 'SET_CURRENT_PAIR'
 export const SET_ALARM_PAIR = 'SET_ALARM_PAIR'
 export const FILTER_PAIR = 'FILTER_PAIR'
 
-
+export const ACTIVE_WATCHER = 'ACTIVE_WATCHER' 
 export const PUSH_NOTIFICATION = 'PUSH_NOTIFICATION' 
+
+
 
 export const selectBittrexMarket = market => ({
     type: CONNECT_SOCKET_BITTREX,
     market
   })
+
+export const activeWatcher = toggle => ({
+  type: ACTIVE_WATCHER,
+  toggle
+})
 
 export const successConnection = data => ({
     type: SUCCESS_CONNECTION,

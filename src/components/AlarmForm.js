@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { setAlarmPair, fetchData } from '../actions'
+import { setAlarmPair, fetchData, activeWatcher } from '../actions'
 
 
 export const AlarmForm = (props) => {
@@ -7,13 +7,15 @@ export const AlarmForm = (props) => {
       e.preventDefault()
       const highEvent = document.querySelector('[name="alarm-high-price"]');
       const lowEvent = document.querySelector('[name="alarm-low-price"]');
-      const { dispatch, name, marketData } = props.main.props;
+      const { dispatch, name, marketData, notifications } = props.main.props;
       const pairData = {
-        name: props.name,
+        ...props.data,
         high: highEvent.value,
         low: lowEvent.value
       }
-
+      if(notifications.selectedAlarmPair.length === 0) {
+        dispatch(activeWatcher(true))
+      }
       dispatch(setAlarmPair(pairData))
     }
 

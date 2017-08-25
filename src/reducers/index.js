@@ -6,7 +6,8 @@ import {
     FAIL_CONNECTION,
     SET_CURRENT_PAIR,
     SET_ALARM_PAIR,
-    PUSH_NOTIFICATION
+    PUSH_NOTIFICATION,
+    ACTIVE_WATCHER
 } from '../actions'
 
 const selectMarket = (state = 'getmarketsummaries', action) => {
@@ -22,7 +23,8 @@ const defaultState = {
     connection: false,
     tradePair: [],
     selectedPair: [],
-    selectedAlarmPair: []
+    selectedAlarmPair: [],
+    activeWatcher: false
 }
 
 const marketData = (state = defaultState, action ) => {
@@ -35,8 +37,22 @@ const marketData = (state = defaultState, action ) => {
             return state
         case SET_CURRENT_PAIR: 
             return {...state, selectedPair: [...state.selectedPair, action.pair]}
+        default:
+            return state
+    }
+}
+
+const notificationState = {
+    selectedAlarmPair: [],
+    activeWatcher: false
+}
+
+const notifications = (state = notificationState, action) => {
+    switch(action.type) {
         case SET_ALARM_PAIR:
             return {...state, selectedAlarmPair: [...state.selectedAlarmPair, action.pair]}
+        case ACTIVE_WATCHER:
+            return {...state, activeWatcher: action.toggle }
         case PUSH_NOTIFICATION:
         default:
             return state
@@ -44,7 +60,8 @@ const marketData = (state = defaultState, action ) => {
 }
 const rootReducer = combineReducers({
     selectMarket,
-    marketData
+    marketData,
+    notifications
 })
 
 export default rootReducer

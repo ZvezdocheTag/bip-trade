@@ -9,6 +9,12 @@ import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import reducer from './reducers'
 
+const configFirebase = {
+  apiKey: "...",
+  authDomain: "...",
+  databaseURL: "...",
+  storageBucket: "...",
+};
 
 const middleware = [ thunk ]
 
